@@ -1,36 +1,24 @@
-const express = require("express");
-const readFile = require("./readFile");
-const decryptData = require("./decryptData");
+require("dotenv").config();
+const readFile = require("./utils/readFile");
+const decryptData = require("./utils/decryptData");
+const removeDuplicates = require("./utils/removeDuplicates");
 
-const app = express();
+const FILE = process.env.SUPER_SECRET_FILE || "super-secret-data";
 
-app.use(express.json());
-
-const FILE = "super-secret-data.txt";
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.post("/decryptData", async (req, res) => {
+const breakSecret = async () => {
+  console.log("Starting...");
   try {
-    console.log("calling post API");
-    
     const dataFile = await readFile(FILE);
     const data = dataFile;
-    // console.log("dataFile:", stringFile);
-    
-    // const decryptedData = await decryptData(data);
-    // res.send(decryptedData);
-    
+
+    const decryptedData = await decryptData(data);
+    const formattedData = decryptedData.map(JSON.parse);
+    const filteredCitizens = removeDuplicates(formattedData);
+
+
   } catch (err) {
-    console.error("Error:", err);
-    res.status(500).send({ error: "Failed to decrypt data" });
+    throw err;
   }
-});
+};
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+breakSecret();
