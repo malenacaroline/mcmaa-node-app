@@ -5,7 +5,7 @@ const constants = require("./constants");
 const read = async (file) => {
   try {
     const data = await fs.promises.readFile(file, "utf-8");
-    const allCitizens = data.split(/\r?\n/); // Handles both Windows (\r\n) and Unix (\n) line endings
+    const allCitizens = data.split(/\r?\n/);
     const shuffledCitizens = citizens.shuffle(allCitizens);
     const selectedCitizens = shuffledCitizens.slice(
       0,
@@ -13,7 +13,6 @@ const read = async (file) => {
     );
     return selectedCitizens;
   } catch (err) {
-    console.error("Error reading file:", err);
     throw err;
   }
 };
