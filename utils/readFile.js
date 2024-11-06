@@ -1,6 +1,5 @@
 const fs = require("fs").promises; // Import fs with promises
 
-const NUM_CITIZENS = 200;
 
 const getCitizens = (allCitizens, numCitizens) => {
   // Shuffle the array using the Fisher-Yates algorithm
@@ -12,12 +11,12 @@ const getCitizens = (allCitizens, numCitizens) => {
   return allCitizens.slice(0, numCitizens);
 };
 
-const readFile = async (file) => {
+const readFile = async (file, numCitizens) => {
   try {
     const data = await fs.readFile(file, "utf-8");
     const allCitizens = data.split(/\r?\n/); // Handles both Windows (\r\n) and Unix (\n) line endings
 
-    const selectedCitizens = getCitizens(allCitizens, NUM_CITIZENS);
+    const selectedCitizens = getCitizens(allCitizens, numCitizens);
     return selectedCitizens;
   } catch (err) {
     console.error("Error reading file:", err);
