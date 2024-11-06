@@ -1,23 +1,18 @@
 require("dotenv").config();
-const readFile = require("./utils/readFile");
-const decryptData = require("./utils/decryptData");
-const removeDuplicates = require("./utils/removeDuplicates");
-const getHomeworldByCitizen = require("./utils/getHomeworlds");
-const groupData = require("./utils/groupData");
-
-const FILE = process.env.SUPER_SECRET_FILE || "super-secret-data.txt";
-const MAX_NUM_CITIZENS = 200;
+const constants = require("./constants");
+const file = require("./file");
+const api = require("./api");
+const data = require("./data");
 
 const breakSecret = async () => {
   console.log("Starting breaking secret...");
   try {
-    const dataFile = await readFile(FILE, MAX_NUM_CITIZENS);
-    const decryptedData = await decryptData(dataFile);
-    const formattedData = decryptedData.map(JSON.parse);
-    const filteredCitizens = removeDuplicates(formattedData);
-    const homeworldsByCitizens = await getHomeworldByCitizen(filteredCitizens);
-    groupData(homeworldsByCitizens);
-
+    const secretFile = await file.read(constants.FILE);
+    const decryptData = await api.decrypt(secretFile);
+    const formattedData = data.format(decryptData);
+    const citizens = data.removeDuplicates(formattedData);
+    const citizensWithHomeworlds = await data.getHomeworldNames(citizens);
+    await file.write(citizensWithHomeworlds);
   } catch (err) {
     throw err;
   }
