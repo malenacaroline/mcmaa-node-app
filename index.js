@@ -9,12 +9,10 @@ const FILE = process.env.SUPER_SECRET_FILE || "super-secret-data.txt";
 const MAX_NUM_CITIZENS = 200;
 
 const breakSecret = async () => {
-  console.log("Starting...");
+  console.log("Starting breaking secret...");
   try {
     const dataFile = await readFile(FILE, MAX_NUM_CITIZENS);
-    const data = dataFile;
-
-    const decryptedData = await decryptData(data);
+    const decryptedData = await decryptData(dataFile);
     const formattedData = decryptedData.map(JSON.parse);
     const filteredCitizens = removeDuplicates(formattedData);
     const homeworldsByCitizens = await getHomeworldByCitizen(filteredCitizens);
