@@ -1,3 +1,4 @@
 node_modules/
 package-lock.json
 citizens-super-secret-info.txt
+.env
