@@ -104,5 +104,3 @@
   - Integration tests
   - Database 
   - Deployment
-
-  **Thank you for the exercise, I've learned a lot! See you in the next step ;)**
